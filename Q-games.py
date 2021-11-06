@@ -1,6 +1,3 @@
-# To add a new cell, type '# %%'
-# To add a new markdown cell, type '# %% [markdown]'
-# %%
 import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense
@@ -18,7 +15,6 @@ style.use("ggplot")
 random.seed(444)
 
 
-# %%
 class model:
     
     # step is accuracy you want the model to go to
@@ -82,7 +78,6 @@ class model:
         plt.show()
 
 
-# %%
 class players:
   def __init__(self, SIZE):
     self.SIZE = SIZE
@@ -134,7 +129,6 @@ class players:
       self.y = self.SIZE -1
 
 
-# %%
 class MyEnv:
     def __init__(self, size, enemy_p, move_p, food_r):
         self.reward = 0
@@ -271,7 +265,6 @@ class MyEnv:
       return done
 
 
-# %%
 def create_q_table(SAVED_Q_TABLE, SIZE):
   if SAVED_Q_TABLE is None:
       q_table = {}
@@ -306,7 +299,6 @@ def create_q_table2(SAVED_Q_TABLE, SIZE):
     return q_table
 
 
-# %%
 SIZE = 10
 
 # episodes
