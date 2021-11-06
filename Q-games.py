@@ -15,6 +15,7 @@ style.use("ggplot")
 random.seed(444)
 
 
+# class model will be used later when this becomes a deep q game
 class model:
     
     # step is accuracy you want the model to go to
