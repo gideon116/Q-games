@@ -8,8 +8,7 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib import style
 
-style.use("ggplot")
-random.seed(444)
+random.seed(1)
 
 
 class AgentModel:
