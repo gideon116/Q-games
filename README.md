@@ -1,1 +1,1 @@
-# Q-learning game with my own environment
+# DDQ-learning game with my own environment
