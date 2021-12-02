@@ -11,7 +11,7 @@ import tensorflow as tf
 from tensorflow.python.lib.io import file_io
 
 # google research generously gave me access to some of their fastest TPUs
-resolver = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='google-research-gift')
+resolver = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='gideon116')
 tf.config.experimental_connect_to_cluster(resolver)
 tf.tpu.experimental.initialize_tpu_system(resolver)
 print("All devices: ", tf.config.list_logical_devices('TPU'))
