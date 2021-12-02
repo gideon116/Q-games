@@ -659,14 +659,14 @@ FOOD_R = 500
 LAVA_P = -400
 
 # model stuff
-if TPU_Train:
+if TPU_TRAIN:
     LIMIT_STEPS_PER_EPISODE = False
     GAMMA = 0.99
     REPLAY_MEMORY_SIZE = 10_000_000
     MIN_REPLAY_SIZE = 100_000
     MINIBATCH_SIZE = 50_000
     UPDATE_TARGET_EVERY = 1
-    LOAD_MODEL = 'models/model1.h5'
+    LOAD_MODEL = 'models/model3.h5'
 
 else:
     GAMMA = 0.99
