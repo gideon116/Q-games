@@ -8,6 +8,7 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib import style
 import tensorflow as tf
+import os
 from tensorflow.python.lib.io import file_io
 
 # google research generously gave me access to some of their fastest TPUs
@@ -758,7 +759,7 @@ for i in range(EPISODES):
         agent.model.save(file)
         
         export_path2 = os.path.join('gs://gideon116', file)
-        with file_io.FileIO(file) as input_f:
+        with file_io.FileIO(file, mode='rb') as input_f:
             with file_io.FileIO(export_path2, mode='wb+') as output_f:
                 output_f.write(input_f.read())
 
