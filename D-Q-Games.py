@@ -7,6 +7,9 @@ import cv2
 import random
 import matplotlib.pyplot as plt
 from matplotlib import style
+import tensorflow as tf
+
+print("All devices: ", tf.config.list_logical_devices('TPU'))
 
 random.seed(1)
 
@@ -625,7 +628,7 @@ class MyEnv:
 
 
 SIZE = 10
-train = False
+train = True
 
 # episodes
 EPISODES = 10_000
