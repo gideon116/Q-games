@@ -8,7 +8,12 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib import style
 import tensorflow as tf
+from tensorflow.python.lib.io import file_io
 
+# google research generously gave me access to some of their fastest TPUs
+resolver = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='google-research-gift')
+tf.config.experimental_connect_to_cluster(resolver)
+tf.tpu.experimental.initialize_tpu_system(resolver)
 print("All devices: ", tf.config.list_logical_devices('TPU'))
 
 random.seed(1)
@@ -438,11 +443,11 @@ class MyEnv:
 
         return current_space_per_reset
 
-    def move(self, action_passed, limit_number_of_episodes=None, limit_number=None):
+    def move(self, action_passed, limit_number_of_episodes=True, limit_number=None):
         self.sub_episode += 1
         done_per_move = False
 
-        if limit_number_of_episodes is not None:
+        if limit_number_of_episodes:
             if limit_number is not None:
                 if self.sub_episode > limit_number:
                     done_per_move = True
@@ -630,6 +635,8 @@ class MyEnv:
 SIZE = 10
 train = True
 
+TPU_TRAIN = True
+
 # episodes
 EPISODES = 10_000
 LIMIT_STEPS_PER_EPISODE = True
@@ -652,14 +659,22 @@ FOOD_R = 500
 LAVA_P = -400
 
 # model stuff
-AGGREGATE_STATS_EVERY = 50
-MIN_REWARD = -50
-GAMMA = 0.99
-REPLAY_MEMORY_SIZE = 100_000
-MIN_REPLAY_SIZE = 100
-MINIBATCH_SIZE = 64
-UPDATE_TARGET_EVERY = 5
-LOAD_MODEL = 'models/model1.h5'
+if TPU_Train:
+    LIMIT_STEPS_PER_EPISODE = False
+    GAMMA = 0.99
+    REPLAY_MEMORY_SIZE = 10_000_000
+    MIN_REPLAY_SIZE = 100_000
+    MINIBATCH_SIZE = 50_000
+    UPDATE_TARGET_EVERY = 1
+    LOAD_MODEL = 'models/model1.h5'
+
+else:
+    GAMMA = 0.99
+    REPLAY_MEMORY_SIZE = 100_000
+    MIN_REPLAY_SIZE = 100
+    MINIBATCH_SIZE = 64
+    UPDATE_TARGET_EVERY = 5
+    LOAD_MODEL = 'models/model1.h5'
 
 # begin
 agent = AgentModel(SIZE, REPLAY_MEMORY_SIZE, MIN_REPLAY_SIZE, MINIBATCH_SIZE, GAMMA, UPDATE_TARGET_EVERY,
@@ -728,11 +743,24 @@ for i in range(EPISODES):
     if i == EPISODES - 1:
         max_reward = max(rewards_list)
         min_reward = min(rewards_list)
-        agent.model.save(f'models/FINAL_MAX-({int(max_reward)})_MIN-({int(min_reward)}).h5')
+        final_file = f'models/FINAL_MAX-({int(max_reward)})_MIN-({int(min_reward)}).h5'
+        agent.model.save(final_file)
+        
+        # save to google cloud
+        export_path1 = os.path.join('gs://gideon116', final_file)
+        with file_io.FileIO(final_file, mode='rb') as input_f:
+            with file_io.FileIO(export_path1, mode='wb+') as output_f:
+                output_f.write(input_f.read())
 
     if i % 50 == 0:
         ave_reward = sum(rewards_list[i-49:])/len(rewards_list[i-49:])
-        agent.model.save(f'models/Episode=>{i}__Ave=>{int(ave_reward)}).h5')
+        file = f'models/Episode=>{i}__Ave=>{int(ave_reward)}).h5'
+        agent.model.save(file)
+        
+        export_path2 = os.path.join('gs://gideon116', file)
+        with file_io.FileIO(file) as input_f:
+            with file_io.FileIO(export_path2, mode='wb+') as output_f:
+                output_f.write(input_f.read())
 
     # decay epsilon
     INITIAL_EPSILON *= DECAY_RATE
