@@ -1,8 +1,6 @@
 # Chase World!
 
-<p align='justify'>
-Google's TPU research team gave me free access to multiple v2.8 and v3.8 TPUs to help me with this project. 
-Chase World is a DDQ-learning game where Patrick figures out how to navigate a world I built for him. I made a few tweaks to the adopted DDQ algorithm to make it more efficient and utilize the full force of Google's TPUs. I am working on other architectures that are even more efficient and will add them to this repo soon.</p>
+<p align='justify'>Google's TPU research team gave me free access to multiple v2.8 and v3.8 TPUs to help me with this project. Chase World is a DDQ-learning game where Patrick figures out how to navigate a world I built for him. I made a few tweaks to the adopted DDQ algorithm to make it more efficient and utilize the full force of Google's TPUs. I am working on other architectures that are even more efficient and will add them to this repo soon.</p>
 
 ___
 <div align="center">
