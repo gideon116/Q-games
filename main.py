@@ -17,8 +17,6 @@ from environment import MyEnv
 from wall import Wall
 from lava import Lava
 
-# google research generously gave me access to some of their fastest TPUs
-
 random.seed(1)
 
 def learn(episodes, wall_type, lava_type, train=True, tpu_train=False, graph=True, display=True, cloud_storage=False,
