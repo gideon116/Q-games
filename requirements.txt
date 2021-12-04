@@ -3,3 +3,4 @@ tensorflow
 opencv-python
 random
 matplotlib
+google-cloud-storage
