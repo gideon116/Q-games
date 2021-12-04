@@ -176,5 +176,5 @@ wall options = ['special', 'bottom', 'top']
 lava options = ['one', 'two', 'three']
 """
 
-learn(100_000, wall_type='bottom', lava_type='one', loaded_model='models/model3.h5', train=True, graph=False,
-      cloud_storage=True, display=False)
+learn(100_000, wall_type='bottom', lava_type='one', loaded_model='models/model3.h5', train=False, graph=False,
+      cloud_storage=False, display=True)
