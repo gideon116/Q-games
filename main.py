@@ -19,6 +19,7 @@ from lava import Lava
 
 random.seed(1)
 
+
 def learn(episodes, wall_type, lava_type, train=True, tpu_train=False, graph=True, display=True, cloud_storage=False,
           loaded_model=None):
     size = 10
@@ -169,11 +170,11 @@ def learn(episodes, wall_type, lava_type, train=True, tpu_train=False, graph=Tru
         plt.plot([i for i in range(len(avg))], avg)
         plt.show()
 
+
 """
 wall options = ['special', 'bottom', 'top']
 lava options = ['one', 'two', 'three']
 """
 
 learn(100_000, wall_type='bottom', lava_type='one', loaded_model='models/model3.h5', train=True, graph=False,
-              cloud_storage=True, display=False)
-
+      cloud_storage=True, display=False)
