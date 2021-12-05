@@ -131,9 +131,7 @@ def learn(episodes, wall_type, lava_type, train=True, tpu_train=False, graph=Tru
 
         # save
         if i == episodes - 1:
-            max_reward = max(rewards_list)
-            min_reward = min(rewards_list)
-            final_file = f'models/FINAL_MAX-({int(max_reward)})_MIN-({int(min_reward)}).h5'
+            final_file = f'models/FINAL_{wall_type}_{lava_type}.h5'
             agent.model.save(final_file)
 
             # save to google cloud
@@ -143,9 +141,9 @@ def learn(episodes, wall_type, lava_type, train=True, tpu_train=False, graph=Tru
                     with file_io.FileIO(export_path1, mode='wb+') as output_f:
                         output_f.write(input_f.read())
 
-        if i % 500 == 0 and i != 0:
-            ave_reward = sum(rewards_list[i - 49:]) / len(rewards_list[i - 49:])
-            file = f'models/Episode=>{i}__Ave=>{int(ave_reward)}).h5'
+        if i % 1000 == 0 and i != 0:
+            ave_reward = sum(rewards_list[i - 999:]) / len(rewards_list[i - 999:])
+            file = f'models/{wall_type}_{lava_type}_{i}__Ave_{int(ave_reward)}.h5'
             agent.model.save(file)
 
             if cloud_storage:
