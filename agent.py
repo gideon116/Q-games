@@ -29,7 +29,6 @@ class AgentModel:
             network_model = load_model(self.loadmodel)
 
         elif self.train_by_image:
-            pass
 
             network_model = Sequential()
 
