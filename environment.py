@@ -1,3 +1,11 @@
+import numpy as np
+import cv2
+
+from players import Players
+from wall import Wall
+from lava import Lava
+
+
 class MyEnv:
 
     def __init__(self, size, enemy_p, move_p, food_r, lava_p, wall_type, lava_type, train_by_image=False):
