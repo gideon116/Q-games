@@ -1,3 +1,12 @@
+import numpy as np
+from collections import deque
+import random
+
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.models import Sequential, load_model
+from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
+
+
 class AgentModel:
 
     def __init__(self, size, replay_memory_size, min_replay_size, minbatch_size, gamma, update_target_every,
