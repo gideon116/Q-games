@@ -1,3 +1,5 @@
+import random
+
 class Players:
 
     def __init__(self, size, restriction=None):
