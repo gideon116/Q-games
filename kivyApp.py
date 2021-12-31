@@ -13,6 +13,7 @@ from kivy.properties import NumericProperty, ReferenceListProperty, ObjectProper
 from kivy.vector import Vector
 from random import randint
 from kivy.clock import Clock
+from kivy.core.window import Window
 from kivy.graphics import *
 from tensorflow.keras.models import load_model
 from environment import MyEnv
@@ -97,10 +98,10 @@ class First(GridLayout):
         self.title = Label(text='Choose your chaser', font_size=50, bold=90)
         self.add_widget(self.title)
 
-        self.spongebob = Button(background_normal='images/chaserp.png', background_down='images/chaserp.png')
+        self.spongebob = Button(background_normal='images/chaserp.png', background_down='images/chaserp2.png')
         self.spongebob.bind(on_release=self.begin_things_spongebob)
 
-        self.patrick = Button(background_normal='images/chasers.png', background_down='images/chasers.png')
+        self.patrick = Button(background_normal='images/chasers.png', background_down='images/chasers2.png')
         self.patrick.bind(on_release=self.begin_things_patrick)
 
         self.players = ThreeCol()
@@ -123,6 +124,9 @@ class Second(GridLayout):
         self.back.bind(on_release=self.begin_things)
         self.add_widget(self.back)
 
+        self.w = Window.size[0]
+        self.h = Window.size[1]
+
         # Agent
         move_penalty = -1
         enemy_penalty = -400
@@ -137,14 +141,14 @@ class Second(GridLayout):
         reward_val = 0
         done = False
 
-        self.food_x = 100 + 100 * env.food.x
-        self.food_y = 100 + 100 * env.food.y
+        self.food_x = self.w/15 + self.w/15 * env.food.x
+        self.food_y = self.h/15 + self.h/15 * env.food.y
 
         self.lava_x = []
         self.lava_y = []
         for lava in env.lava.pos_range:
-            self.lava_x.append(100 + 100 * lava[0])
-            self.lava_y.append(100 + 100 * lava[1])
+            self.lava_x.append(self.w/15 + self.w/15 * lava[0])
+            self.lava_y.append(self.h/15 + self.h/15 * lava[1])
 
         self.chaser_x = []
         self.chaser_y = []
@@ -164,38 +168,38 @@ class Second(GridLayout):
             reward_val += reward
             current_space = future_space
 
-            self.chaser_x.append(100 + 100 * env.guy.x)
-            self.chaser_y.append(100 + 100 * env.guy.y)
+            self.chaser_x.append(self.w/15 + self.w/15 * env.guy.x)
+            self.chaser_y.append(self.h/15 + self.h/15 * env.guy.y)
 
-            self.enemy_x.append(100 + 100 * env.enemy.x)
-            self.enemy_y.append(100 + 100 * env.enemy.y)
+            self.enemy_x.append(self.w/15 + self.w/15 * env.enemy.x)
+            self.enemy_y.append(self.h/15 + self.h/15 * env.enemy.y)
 
             with self.canvas:
                 Color(1, 1, 1)
 
-                self.floor = Line(points=[100, 100,
-                                          1100, 100,
-                                          1100, 1100,
-                                          100, 1100,
-                                          100, 100], width=2)
+                self.floor = Line(points=[self.w/15, self.h/15,
+                                          11 * self.w/15, self.h/15,
+                                          11 * self.w/15, 11 * self.h/15,
+                                          self.w/15, 11 * self.h/15,
+                                          self.w/15, self.h/15], width=2)
 
                 # lines in between
                 for i in range(1, 11):
-                    Line(points=[i * 100 + 100, 100,
-                                 i * 100 + 100, 1100])
+                    Line(points=[i * self.w/15 + self.w/15, self.h/15,
+                                 i * self.w/15 + self.w/15, 11 * self.h/15])
 
-                    Line(points=[100, i * 100 + 100,
-                                 1100, i * 100 + 100])
+                    Line(points=[self.w/15, i * self.h/15 + self.h/15,
+                                 11 * self.w/15, i * self.h/15 + self.h/15])
 
         # load the food
-        self.food = Image(source='images/burger.png', height=70, width=70)
+        self.food = Image(source='images/burger.png', height=self.w/20, width=self.w/20)
         self.food.x = self.food_x
         self.food.y = self.food_y
         self.add_widget(self.food)
 
         # load the lava
-        lava_height = 200
-        lava_width = 200
+        lava_height = self.h/15
+        lava_width = self.w/15
 
         for index, lava in enumerate(env.lava.pos_range):
             if index % 4 == 0:
@@ -205,24 +209,24 @@ class Second(GridLayout):
                 self.add_widget(self.lava)
 
         # load the players
-        self.chaser = Image(source='images/patrick.png', height=75, width=75)
-        self.chaser.x = 100 + 100 * self.chaser_x[0]
-        self.chaser.y = 100 + 100 * self.chaser_y[1]
+        self.chaser = Image(source='images/patrick.png', height=self.w/20, width=self.w/20)
+        self.chaser.x = self.w/15 + self.w/15 * self.chaser_x[0]
+        self.chaser.y = self.h/15 + self.h/15 * self.chaser_y[1]
         self.add_widget(self.chaser)
 
-        self.enemy = Image(source='images/spongebob.png', height=75, width=75)
-        self.enemy.x = 100 + 100 * self.enemy_x[0]
-        self.enemy.y = 100 + 100 * self.enemy_y[1]
+        self.enemy = Image(source='images/spongebob.png', height=self.w/20, width=self.w/20)
+        self.enemy.x = self.w/15 + self.w/15 * self.enemy_x[0]
+        self.enemy.y = self.h/15 + self.h/15 * self.enemy_y[1]
         self.add_widget(self.enemy)
 
         for wall_b in env.wall.pos_range:
-            xi = 100 + 100 * wall_b[0]
-            yi = 100 + 100 * wall_b[1]
+            xi = self.w/15 + self.w/15 * wall_b[0]
+            yi = self.h/15 + self.h/15 * wall_b[1]
 
             with self.canvas:
                 Color(1, 1, 1)
                 self.wall_block = Rectangle()
-                self.wall_block.size = (100, 100)
+                self.wall_block.size = (self.w/15, self.h/15)
                 self.wall_block.pos = (xi, yi)
 
         # move the enemy
@@ -247,16 +251,12 @@ class Second(GridLayout):
             self.animation.stop(self.chaser)
             self.animation.start(self.chaser)
 
-
-
         # if the chaser hits the lava
         for lava in env.lava.pos_range:
             if self.chaser_x[-1] == lava[0] and self.chaser_y[-1] == lava[1]:
                 self.animation += Animation(source="v1.png", t='in_out_elastic')
                 self.animation.start(self.chaser)
                 break
-
-
 
     def begin_things(self, instance):
         app.screen_manager.current = 'first'
