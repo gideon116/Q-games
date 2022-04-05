@@ -1,4 +1,6 @@
 #EXTM3U
+#EXTINF:-1,USA: TNT
+http://fortv.cc:8080/test123/test123/46688
 #EXTINF:0,UK BT Sport 1 HD 1 (P)
 http://fortv.cc:8080/test123/test123/53711
 #EXTINF:0,UK BT Sport 2 HD 1 (P)
