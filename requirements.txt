@@ -1,6 +1,6 @@
 numpy
 tensorflow
 opencv-python
-random
+random2
 matplotlib
 google-cloud-storage
